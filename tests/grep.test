@@ -1,0 +1,42 @@
+{% for python_version in python_versions %}
+- name: Grep JSON
+  preconditions:
+    python_version: {{ python_version }}
+    variables:
+      buried_text_dict: |
+        {
+            "a": 4,
+            "b": 2,
+            "c": 3,
+            "x": {
+                "somekey": "a long piece of text with buried string"
+            }
+        }
+      buried_text_list: |
+        [
+            1,
+            2,
+            {
+                "a": [
+                    1,
+                    2,
+                    "buried text"
+                ],
+                "b": 1,
+                "c": 3
+            }
+        ]
+      results_dict: |
+        ['x']['somekey']: "a long piece of text with buried string"
+      results_list: |
+        [2]['a'][2]: "buried text"
+  tags:
+    - py{{ python_version }}
+  scenario:
+    - Run command: |
+        from hitchjson import grep
+
+    - Assert True: grep(buried_text_dict, "buried") == results_dict.strip()
+
+    - Assert True: grep(buried_text_list, "buried") == results_list.strip()
+{% endfor %}
