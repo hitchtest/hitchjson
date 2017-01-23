@@ -1,0 +1,45 @@
+{% for python_version in python_versions %}
+- name: Grep JSON
+  preconditions:
+    python_version: {{ python_version }}
+    variables:
+      jsona: |
+        {
+            "a": 3,
+            "b": 2,
+            "c": 3,
+            "x": {
+                "somekey": "a long piece of text with buried string"
+            }
+        }
+      jsonb: |
+        {
+            "b": 2,
+            "a": 4,
+            "c": 3,
+            "x": {
+                "somekey": "a long piece of text with buried string"
+            }
+        }
+      difftext: |
+        --- 
+
+        +++ 
+
+        @@ -1,5 +1,5 @@
+
+         {
+        -    "a": 3,
+        +    "a": 4,
+             "b": 2,
+             "c": 3,
+             "x": {
+  tags:
+    - py{{ python_version }}
+  scenario:
+    - Run command: |
+        from hitchjson import diff
+
+    - Assert True: diff(jsona, jsonb) == difftext.strip()
+
+{% endfor %}

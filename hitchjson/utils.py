@@ -1,4 +1,5 @@
 from json import loads
+import difflib
 import json
 import sys
 
@@ -17,6 +18,17 @@ def pretty(json_text):
     """
     return json.dumps(loads(json_text), indent=4, sort_keys=True, separators=(',', ': '))
 
+
+def diff(json_texta, json_textb):
+    """
+    Diff two json strings, giving a sensible prettified result.
+    """
+    return '\n'.join(
+        difflib.unified_diff(
+            pretty(json_texta).split("\n"),
+            pretty(json_textb).split("\n")
+        )
+    )
 
 def _selector(keys):
     sel = ""
