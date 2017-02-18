@@ -9,7 +9,7 @@
             "b": 2,
             "c": 3,
             "x": {
-                "somekey": "a long piece of text with buried string"
+                "somekéy": "a long piece of text with buried string"
             }
         }
       buried_text_list: |
@@ -17,19 +17,19 @@
             1,
             2,
             {
-                "a": [
+                "é": [
                     1,
                     2,
-                    "buried text"
+                    "buriéd text"
                 ],
                 "b": 1,
                 "c": 3
             }
         ]
       results_dict: |
-        ['x']['somekey']: "a long piece of text with buried string"
+        ['x']['somekéy']: "a long piece of text with buried string"
       results_list: |
-        [2]['a'][2]: "buried text"
+        [2]['é'][2]: "buriéd text"
   tags:
     - py{{ python_version }}
   scenario:
@@ -38,5 +38,5 @@
 
     - Assert True: grep(buried_text_dict, "buried") == results_dict.strip()
 
-    - Assert True: grep(buried_text_list, "buried") == results_list.strip()
+    - Assert True: grep(buried_text_list, "buriéd") == results_list.strip()
 {% endfor %}

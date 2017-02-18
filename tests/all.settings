@@ -1,4 +1,4 @@
 python_versions:
-  - 3.5.0
+  - 2.7.10 
 failfast: true
 pause_on_failure: true

@@ -12,6 +12,6 @@ Grep JSON
 
 .. code-block:: python
 
-  >>> grep(buried_text_list, "buried") == results_list.strip()
+  >>> grep(buried_text_list, "buriéd") == results_list.strip()
   True
 
