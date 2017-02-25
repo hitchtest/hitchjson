@@ -86,8 +86,8 @@ def find(json, search_text):
     if sys.version[0] == '2' and type(search_text) is str:
         search_text = search_text.decode('utf8')
     parsed = json if is_dict_or_list(json) else loads(json)
-    return _grep_dict(parsed, search_text) if isinstance(parsed, dict) \
-           else _grep_list(parsed, search_text)
+    return _grep_dict(parsed, search_text) if isinstance(parsed, dict) else\
+        _grep_list(parsed, search_text)
 
 
 def grep(json, search_text):
