@@ -54,7 +54,7 @@ def _grep_list(parsed, search, keys=None):
             results.extend(_grep_dict(value, search, keys=key_hierarchy))
         if isstr(value):
             if search in value:
-                results.append(u'{0}: "{1}"'.format(_selector(key_hierarchy), value))
+                results.append((_selector(key_hierarchy), value))
     return results
 
 
@@ -70,22 +70,31 @@ def _grep_dict(parsed, search, keys=None):
             results.extend(_grep_list(value, search, keys=key_hierarchy))
         if isstr(value):
             if search in value:
-                results.append(u'{0}: "{1}"'.format(_selector(key_hierarchy), value))
+                results.append((_selector(key_hierarchy), value))
         if search in key:
-            results.append(u'{0}: "{1}"'.format(_selector(key_hierarchy), value))
+            results.append((_selector(key_hierarchy), value))
     return results
 
 
-def grep(json, search):
+def find(json, search_text):
     """
     Takes a JSON string and a search string and output a list of
     matching keys, values and text.
     """
     assert isstr(json) or is_dict_or_list(json)
-    assert isstr(search)
-    if sys.version[0] == '2' and type(search) is str:
-        search = search.decode('utf8')
+    assert isstr(search_text)
+    if sys.version[0] == '2' and type(search_text) is str:
+        search_text = search_text.decode('utf8')
     parsed = json if is_dict_or_list(json) else loads(json)
-    return "\n".join(
-        _grep_dict(parsed, search) if isinstance(parsed, dict) else _grep_list(parsed, search)
+    return _grep_dict(parsed, search_text) if isinstance(parsed, dict) \
+           else _grep_list(parsed, search_text)
+
+
+def grep(json, search_text):
+    import sys
+    sys.stdout.write(
+        '\n'.join([
+            u"{0}: {1}".format(keys, text)
+            for keys, text in find(json, search_text)])
     )
+    sys.stdout.flush()

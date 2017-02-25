@@ -9,7 +9,7 @@
             "b": 2,
             "c": 3,
             "x": {
-                "somekéy": "a long piece of text with buried string"
+                "somekéy": "text with buried string"
             }
         }
       buried_text_list: |
@@ -26,22 +26,22 @@
                 "c": 3
             }
         ]
-      results_dict: |
-        ['x']['somekéy']: "a long piece of text with buried string"
-      results_list: |
-        [2]['é'][2]: "buriéd text"
+      #results_dict: |
+        #['x']['somekéy']: "text with buried string"
+      #results_list: |
+        #[2]['é'][2]: "buriéd text"
   tags:
     - py{{ python_version }}
   scenario:
     - Run command: |
-        from hitchjson import grep
+        from hitchjson import find
         from json import loads
 
-    - Assert True: grep(buried_text_dict, "buried") == results_dict.strip()
+    - Assert True: find(buried_text_dict, "buried") == [(u"['x']['somek\xe9y']", u'text with buried string')]
 
-    - Assert True: grep(loads(buried_text_dict), "buried") == results_dict.strip()
+    - Assert True: find(loads(buried_text_dict), "buried") == [(u"['x']['somek\xe9y']", u'text with buried string')]
 
-    - Assert True: grep(buried_text_list, "buriéd") == results_list.strip()
+    - Assert True: find(buried_text_list, "buriéd") == [(u"[2]['é'][2]", u"buriéd text")]
 
-    - Assert True: grep(loads(buried_text_list), "buriéd") == results_list.strip()
+    - Assert True: find(loads(buried_text_list), "buriéd") == [(u"[2]['é'][2]", u"buriéd text")]
 {% endfor %}
