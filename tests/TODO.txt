@@ -1,5 +1,3 @@
-hitchjson.grep(x, y) -- will PRINT by default
-hitchjson.grep_list(x, y) --- will return a list of 'Match' objects.
 hitchjson.grep(x, CASE_INSENSITIVE)
 hitchjson.grep(x, "1000") -- matches integers as well
 
