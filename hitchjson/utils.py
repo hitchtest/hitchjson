@@ -1,6 +1,5 @@
-from json import loads
+from json import loads, dumps
 import difflib
-import json
 import sys
 
 
@@ -12,11 +11,15 @@ def isstr(string):
     return isinstance(string, str) or isinstance(string, unicode)
 
 
+def is_dict_or_list(obj):
+    return isinstance(obj, dict) or isinstance(obj, list)
+
+
 def pretty(json_text):
     """
     Takes a JSON string and outputs an ordered, indented JSON string.
     """
-    return json.dumps(loads(json_text), indent=4, sort_keys=True, separators=(',', ': '))
+    return dumps(loads(json_text), indent=4, sort_keys=True, separators=(',', ': '))
 
 
 def diff(json_texta, json_textb):
@@ -73,16 +76,16 @@ def _grep_dict(parsed, search, keys=None):
     return results
 
 
-def grep(json_text, search):
+def grep(json, search):
     """
     Takes a JSON string and a search string and output a list of
     matching keys, values and text.
     """
-    assert isstr(json_text)
+    assert isstr(json) or is_dict_or_list(json)
     assert isstr(search)
     if sys.version[0] == '2' and type(search) is str:
         search = search.decode('utf8')
-    parsed = loads(json_text)
+    parsed = json if is_dict_or_list(json) else loads(json)
     return "\n".join(
         _grep_dict(parsed, search) if isinstance(parsed, dict) else _grep_list(parsed, search)
     )

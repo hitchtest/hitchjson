@@ -1,4 +1,3 @@
-hitchjson.grep(x -- can be dict or list and it will json dump before doing a grep)
 hitchjson.grep(x, y) -- will PRINT by default
 hitchjson.grep_list(x, y) --- will return a list of 'Match' objects.
 hitchjson.grep(x, CASE_INSENSITIVE)

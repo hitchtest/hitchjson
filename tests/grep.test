@@ -35,8 +35,13 @@
   scenario:
     - Run command: |
         from hitchjson import grep
+        from json import loads
 
     - Assert True: grep(buried_text_dict, "buried") == results_dict.strip()
 
+    - Assert True: grep(loads(buried_text_dict), "buried") == results_dict.strip()
+
     - Assert True: grep(buried_text_list, "buriéd") == results_list.strip()
+
+    - Assert True: grep(loads(buried_text_list), "buriéd") == results_list.strip()
 {% endfor %}
