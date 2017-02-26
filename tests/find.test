@@ -38,9 +38,13 @@
 
     - Assert True: find(buried_text_dict, "Buried") == [(u"['x']['somekéy']", u'text with buried string')]
 
+    - Assert True: find(buried_text_dict, "3") == [(u"['c']", u'3')]
+
     - Assert True: find(loads(buried_text_dict), "Buried") == [(u"['x']['somekéy']", u'text with buried string')]
 
     - Assert True: find(buried_text_list, "buriéd") == [(u"[2]['é'][2]", u"buriéd text")]
 
     - Assert True: find(loads(buried_text_list), "buriéd") == [(u"[2]['é'][2]", u"buriéd text")]
+
+    - Assert True: find(buried_text_list, "3") == [(u"[2]['c']", u"3")]
 {% endfor %}

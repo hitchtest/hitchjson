@@ -1,3 +1,0 @@
-hitchjson.grep(x, CASE_INSENSITIVE)
-hitchjson.grep(x, "1000") -- matches integers as well
-
