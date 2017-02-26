@@ -8,12 +8,12 @@ Grep JSON
 
 .. code-block:: python
 
-  >>> find(buried_text_dict, "buried") == [(u"['x']['somek\xe9y']", u'text with buried string')]
+  >>> find(buried_text_dict, "Buried") == [(u"['x']['somekéy']", u'text with buried string')]
   True
 
 .. code-block:: python
 
-  >>> find(loads(buried_text_dict), "buried") == [(u"['x']['somek\xe9y']", u'text with buried string')]
+  >>> find(loads(buried_text_dict), "Buried") == [(u"['x']['somekéy']", u'text with buried string')]
   True
 
 .. code-block:: python

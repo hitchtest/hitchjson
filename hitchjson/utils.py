@@ -52,8 +52,14 @@ def _grep_list(parsed, search, keys=None):
         key_hierarchy = list(keys) + [index, ]
         if isinstance(value, dict):
             results.extend(_grep_dict(value, search, keys=key_hierarchy))
-        if isstr(value):
-            if search in value:
+        elif isinstance(value, list):
+            results.extend(_grep_list(value, search, keys=key_hierarchy))
+        else:
+            if isstr(value):
+                value = value
+            else:
+                value = str(value)
+            if search.lower() in value.lower():
                 results.append((_selector(key_hierarchy), value))
     return results
 
@@ -66,10 +72,14 @@ def _grep_dict(parsed, search, keys=None):
         key_hierarchy = list(keys) + [key, ]
         if isinstance(value, dict):
             results.extend(_grep_dict(value, search, keys=key_hierarchy))
-        if isinstance(value, list):
+        elif isinstance(value, list):
             results.extend(_grep_list(value, search, keys=key_hierarchy))
-        if isstr(value):
-            if search in value:
+        else:
+            if isstr(value):
+                value = value
+            else:
+                value = str(value)
+            if search.lower() in value.lower():
                 results.append((_selector(key_hierarchy), value))
         if search in key:
             results.append((_selector(key_hierarchy), value))

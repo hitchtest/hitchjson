@@ -1,5 +1,8 @@
 {% for python_version in python_versions %}
-- name: Grep JSON
+- name: Find JSON
+  description: |
+    Find text buried in enormous JSON structures and
+    get a selector that you can use to look up that data.
   preconditions:
     python_version: {{ python_version }}
     variables:
@@ -26,10 +29,6 @@
                 "c": 3
             }
         ]
-      #results_dict: |
-        #['x']['somekéy']: "text with buried string"
-      #results_list: |
-        #[2]['é'][2]: "buriéd text"
   tags:
     - py{{ python_version }}
   scenario:
@@ -37,9 +36,9 @@
         from hitchjson import find
         from json import loads
 
-    - Assert True: find(buried_text_dict, "buried") == [(u"['x']['somek\xe9y']", u'text with buried string')]
+    - Assert True: find(buried_text_dict, "Buried") == [(u"['x']['somekéy']", u'text with buried string')]
 
-    - Assert True: find(loads(buried_text_dict), "buried") == [(u"['x']['somek\xe9y']", u'text with buried string')]
+    - Assert True: find(loads(buried_text_dict), "Buried") == [(u"['x']['somekéy']", u'text with buried string')]
 
     - Assert True: find(buried_text_list, "buriéd") == [(u"[2]['é'][2]", u"buriéd text")]
 
