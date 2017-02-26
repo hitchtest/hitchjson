@@ -1,5 +1,9 @@
-Grep JSON
+Find JSON
 =========
+
+Find text buried in enormous JSON structures and
+get a selector that you can use to look up that data.
+
 
 .. code-block:: python
 

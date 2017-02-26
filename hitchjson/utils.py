@@ -44,23 +44,29 @@ def _selector(keys):
     return sel
 
 
+def _results(value, search, key_hierarchy):
+    results = []
+    if isinstance(value, dict):
+        results.extend(_grep_dict(value, search, keys=key_hierarchy))
+    elif isinstance(value, list):
+        results.extend(_grep_list(value, search, keys=key_hierarchy))
+    else:
+        if isstr(value):
+            value = value
+        else:
+            value = str(value)
+        if search.lower() in value.lower():
+            results.append((_selector(key_hierarchy), value))
+    return results
+
+
 def _grep_list(parsed, search, keys=None):
     results = []
     if keys is None:
         keys = []
     for index, value in enumerate(parsed):
         key_hierarchy = list(keys) + [index, ]
-        if isinstance(value, dict):
-            results.extend(_grep_dict(value, search, keys=key_hierarchy))
-        elif isinstance(value, list):
-            results.extend(_grep_list(value, search, keys=key_hierarchy))
-        else:
-            if isstr(value):
-                value = value
-            else:
-                value = str(value)
-            if search.lower() in value.lower():
-                results.append((_selector(key_hierarchy), value))
+        results.extend(_results(value, search, key_hierarchy))
     return results
 
 
@@ -70,19 +76,7 @@ def _grep_dict(parsed, search, keys=None):
         keys = []
     for key, value in parsed.items():
         key_hierarchy = list(keys) + [key, ]
-        if isinstance(value, dict):
-            results.extend(_grep_dict(value, search, keys=key_hierarchy))
-        elif isinstance(value, list):
-            results.extend(_grep_list(value, search, keys=key_hierarchy))
-        else:
-            if isstr(value):
-                value = value
-            else:
-                value = str(value)
-            if search.lower() in value.lower():
-                results.append((_selector(key_hierarchy), value))
-        if search in key:
-            results.append((_selector(key_hierarchy), value))
+        results.extend(_results(value, search, key_hierarchy))
     return results
 
 
